@@ -15,9 +15,10 @@
 #   limitations under the License.
 import itertools
 
-import matplotlib.pyplot as plt
 import numpy as np
 import qutip
+
+from lib.system import System
 
 # Clebsch-Gordon coefficients
 cg = np.zeros((6, 6))
@@ -38,7 +39,7 @@ mJ[3] = mJ[4] = 1 / 2
 mJ[5] = 3 / 2
 
 
-class SixLevelSystem:
+class SixLevelSystem(System):
     linewidth = 4.11 * 10 ** 6  # Hz
 
     def __init__(self, delta=0.0, sat=0.5, polarization=(1, 0, 0), B=2.5):
@@ -51,6 +52,7 @@ class SixLevelSystem:
         :param polarization: Laser polarization as a 3-tuple (pi, sigma+, sigma-).
         :param B: Magnetic field in Gauss.
         """
+        super(SixLevelSystem, self).__init__()
         self.delta = delta
         self.sat = sat
         self.polarization = polarization
@@ -67,7 +69,7 @@ class SixLevelSystem:
         magnetic_field = [2 * np.pi * mJ[i] * gJ[i] * 1.4 * 10 ** 6 * self.B * self.basis[i] * self.basis[i].dag()
                           for i in range(6)]
 
-        off_diagonal_elements = [self.omega[i][j] * self.basis[i] * self.basis[j].dag() * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * self.basis[i] * self.basis[j].dag() * cg[i][j] ** 2
                                  for i, j in itertools.product(range(6), range(6))]
 
         return sum(laser_field) + sum(magnetic_field) + sum(off_diagonal_elements)
@@ -98,26 +100,3 @@ class SixLevelSystem:
         omega[1][4] = omega[4][1] = omega[3][5] = omega[5][3] = _omega * sigma_minus
         omega[1][2] = omega[2][1] = omega[3][4] = omega[4][3] = _omega * pi
         return omega
-
-
-if __name__ == "__main__":
-
-    SLS = SixLevelSystem()
-
-    psi0 = 1 / np.sqrt(2) * (SLS.basis[1] + SLS.basis[4])
-
-    times = np.linspace(0.0, 10.0 * 10 ** -6, num=1000)
-
-    populations = [state * state.dag() for state in SLS.basis]
-
-    result = qutip.mesolve(SLS.H, psi0, times, SLS.decay, populations)
-    print("Done calculating")
-
-    for i in range(6):
-        plt.plot(result.times * 10 ** 6, result.expect[i], label="%d" % (i))
-
-    plt.xlabel("Time in us")
-    plt.ylabel("Population")
-    plt.legend()
-    plt.show()
-    plt.close()

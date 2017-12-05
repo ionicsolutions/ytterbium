@@ -15,9 +15,10 @@
 #   limitations under the License.
 import itertools
 
-import matplotlib.pyplot as plt
 import numpy as np
 import qutip
+
+from lib.system import System
 
 # Clebsch-Gordon coefficients
 cg = np.zeros((4, 4))
@@ -35,7 +36,7 @@ mJ[0] = mJ[2] = -1 / 2
 mJ[1] = mJ[3] = 1 / 2
 
 
-class FourLevelSystem:
+class FourLevelSystem(System):
     linewidth = 19.6 * 10 ** 6  # Hz
 
     def __init__(self, delta=0.0, sat=1.0, polarization=(1, 0, 0), B=0.0):
@@ -46,6 +47,7 @@ class FourLevelSystem:
         :param polarization: Laser polarization as a 3-tuple (pi, sigma+, sigma-).
         :param B: Magnetic field in Gauss.
         """
+        super(FourLevelSystem, self).__init__()
         self.delta = delta
         self.sat = sat
         self.polarization = polarization
@@ -62,7 +64,7 @@ class FourLevelSystem:
         magnetic_field = [2 * np.pi * mJ[i] * gJ[i] * 1.4 * 10 ** 6 * self.B * self.basis[i] * self.basis[i].dag()
                           for i in range(4)]
 
-        off_diagonal_elements = [self.omega[i][j] * self.basis[i] * self.basis[j].dag() * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * self.basis[i] * self.basis[j].dag() * cg[i][j] ** 2
                                  for i, j in itertools.product(range(4), range(4))]
 
         return sum(laser_field) + sum(magnetic_field) + sum(off_diagonal_elements)
@@ -93,26 +95,3 @@ class FourLevelSystem:
         omega[0][3] = omega[3][0] = _omega * sigma_plus
         omega[1][2] = omega[2][1] = _omega * sigma_minus
         return omega
-
-
-if __name__ == "__main__":
-
-    FLS = FourLevelSystem(-10.0, 0.05, (1, 2, 0), 0.5)
-
-    psi0 = 1 / np.sqrt(2) * (FLS.basis[0] + FLS.basis[1])
-
-    times = np.linspace(0.0, 10.0 * 10 ** -6, num=1000)
-
-    populations = [state * state.dag() for state in FLS.basis]
-
-    result = qutip.mesolve(FLS.H, psi0, times, FLS.decay, populations)
-    print("Done calculating")
-
-    for i in range(4):
-        plt.plot(result.times * 10 ** 6, result.expect[i], label="%d" % i)
-
-    plt.xlabel("Time in us")
-    plt.ylabel("Population")
-    plt.legend()
-    plt.show()
-    plt.close()

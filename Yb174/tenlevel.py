@@ -15,7 +15,6 @@
 #   limitations under the License.
 import itertools
 
-import matplotlib.pyplot as plt
 import numpy as np
 import qutip
 
@@ -116,29 +115,3 @@ class TenLevelSystem:
                    [0.005 * term for term in _decay[9]]
 
         return decay
-
-
-if __name__ == "__main__":
-
-    TLS = TenLevelSystem(delta_SP=-15.0, sat_SP=5.0, polarization_SP=(1, 1, 1),
-                         delta_D=0.0, sat_D=0.0, polarization_D=(1, 0, 0), B=1.0)
-
-    psi0 = 1 / np.sqrt(2) * (TLS.basis[6] + TLS.basis[7])
-
-    times = np.linspace(0.0, 500 * 10 ** -6, num=10000)
-
-    populations = [state * state.dag() for state in TLS.basis]
-
-    print(TLS.H)
-
-    result = qutip.mesolve(TLS.H, psi0, times, TLS.decay, populations[:6])
-    print("Done calculating")
-
-    for i in range(6):
-        plt.plot(result.times * 10 ** 6, result.expect[i], label="%d" % i)
-
-    plt.xlabel("Time in us")
-    plt.ylabel("Population")
-    plt.legend()
-    plt.show()
-    plt.close()
