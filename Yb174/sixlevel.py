@@ -83,10 +83,10 @@ class SixLevelSystem(System):
     def raw_decay(self):
         """All decay terms."""
         decay = [[] for _ in range(6)]
-        decay[0] = [np.sqrt(2 * np.pi * self.linewidth) * cg[i][1] * self.basis[i] * self.basis[1].dag()
-                    for i in (0, 2, 4)]
+        decay[1] = [np.sqrt(2 * np.pi * self.linewidth) * cg[i][1] * self.basis[i] * self.basis[1].dag()
+                    for i in range(6)]
         decay[3] = [np.sqrt(2 * np.pi * self.linewidth) * cg[i][3] * self.basis[i] * self.basis[3].dag()
-                    for i in (2, 4, 5)]
+                    for i in range(6)]
         return decay
 
     @property
