@@ -59,7 +59,7 @@ class FourLevelSystem(System):
     def H(self):
         """Full Hamiltonian of the system."""
         laser_field = [2 * np.pi * self.delta * 10 ** 6 * self.basis[i] * self.basis[i].dag()
-                       for i in range(4)]
+                       for i in (2, 3)]
 
         magnetic_field = [2 * np.pi * mJ[i] * gJ[i] * 1.4 * 10 ** 6 * self.B * self.basis[i] * self.basis[i].dag()
                           for i in range(4)]

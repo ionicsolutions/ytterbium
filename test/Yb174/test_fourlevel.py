@@ -12,6 +12,17 @@ def exponential_decay(t, tau):
     return np.exp(-t / tau)
 
 
+def lorentzian(v, gamma, A):
+    return A / (2 * np.pi) * (gamma / 2) ** 2 / (v ** 2 + (gamma / 2) ** 2)
+
+
+def R(s0, gamma):
+    def r(delta):
+        return (s0 * gamma / 2) / (1 + s0 + (2 * delta / gamma) ** 2)
+
+    return r
+
+
 class TestUndrivenSystem(unittest.TestCase):
 
     def setUp(self):
@@ -47,8 +58,8 @@ class TestUndrivenSystem(unittest.TestCase):
                 plt.show()
                 plt.close()
 
-            linewidth = 2 * np.pi / popt[0]
-            self.assertTrue(self.FLS.linewidth - linewidth < 100.0)
+            linewidth = 1 / (2 * np.pi * popt[0])
+            self.assertTrue(abs(self.FLS.linewidth - linewidth) < 100.0)
             self.assertTrue(perr[0] < 100.0)
 
     def test_single_decay_ratio(self):
@@ -95,8 +106,8 @@ class TestUndrivenSystem(unittest.TestCase):
             plt.show()
             plt.close()
 
-        linewidth = 2 * np.pi / popt[0]
-        self.assertTrue(self.FLS.linewidth - linewidth < 100.0)
+        linewidth = 1 / (2 * np.pi * popt[0])
+        self.assertTrue(abs(self.FLS.linewidth - linewidth) < 100.0)
         self.assertTrue(perr[0] < 100.0)
 
     def test_double_decay_ratio(self):
@@ -201,6 +212,69 @@ class TestDrivenSystem(unittest.TestCase):
 
         self.assertTrue(result.expect[0][-1] - result.expect[1][-1] < 1e-6)
         self.assertTrue(result.expect[2][-1] - result.expect[3][-1] < 1e-6)
+
+    def test_sigma_saturation(self):
+        psi0 = self.FLS.basis[1]
+
+        self.FLS.sat = 1.0
+        self.FLS.polarization = (0, 1, 1)
+
+        result = qutip.mesolve(self.FLS.H, psi0, self.times, self.FLS.decay, self.population)
+
+        if False:
+            for i in range(4):
+                plt.plot(self.times, result.expect[i], label="%d" % i)
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        self.assertTrue(result.expect[0][-1] - result.expect[1][-1] < 1e-6)
+        self.assertTrue(result.expect[2][-1] - result.expect[3][-1] < 1e-6)
+
+
+class TestSpectroscopy(unittest.TestCase):
+
+    def setUp(self):
+        self.FLS = FourLevelSystem(delta=0.0, sat=0.0, polarization=(1, 0, 0),
+                                   B=0)
+        self.population = [state * state.dag() for state in self.FLS.basis]
+        self.times = np.linspace(0, 2.0 * 10 ** -6, num=1000)
+
+    def test_linewidth_pi(self):
+        psi0 = 1 / np.sqrt(2) * (self.FLS.basis[0] + self.FLS.basis[1])
+
+        self.FLS.sat = 0.0001
+        self.FLS.polarization = (1, 0, 0)
+
+        self.times = np.linspace(0, 0.2 * 10 ** -6, num=100)
+
+        detuning = np.linspace(-81.0, 79.0, num=80)
+        transfer = []
+
+        for delta in detuning:
+            self.FLS.delta = delta
+            result = qutip.mesolve(self.FLS.H, psi0, self.times, self.FLS.decay, self.population)
+            transfer.append(result.expect[2][-1] + result.expect[3][-1])
+
+            if False:
+                plt.plot(result.times, result.expect[2], "--", label="%0.2f" % delta)
+
+        if False:
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        popt, pcov = curve_fit(lorentzian, detuning, transfer, p0=[1.0, 20.0])
+        fit_detuning = np.linspace(min(detuning), max(detuning), num=1000)
+
+        if False:
+            plt.plot(detuning, transfer, "o")
+            plt.plot(fit_detuning, lorentzian(fit_detuning, *popt), "--", label="$\Gamma$ = %0.2f MHz" % popt[0])
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        self.assertTrue(abs(popt[0] - self.FLS.linewidth / 10 ** 6) < 0.1)
 
 
 if __name__ == "__main__":
