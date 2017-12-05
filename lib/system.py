@@ -19,10 +19,12 @@ import numpy as np
 class System:
 
     def __init__(self):
+        """Common base class for multi-level systems."""
         self._polarization = (1, 0, 0)
 
     @property
     def polarization(self):
+        """Normalized polarization vector (pi, sigma+, sigma-)."""
         return self._polarization
 
     @polarization.setter
