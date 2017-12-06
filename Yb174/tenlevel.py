@@ -104,14 +104,14 @@ class TenLevelSystem:
 
         # Complete decay
         decay = [[] for _ in range(10)]
-        decay[0] = [0.018 * term for term in self.SLS.raw_decay[0]] + \
-                   [0.987 * term for term in _decay[1]]
-        decay[3] = [0.018 * term for term in self.SLS.raw_decay[3]] + \
-                   [0.987 * term for term in _decay[3]]
+        decay[0] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[0]] + \
+                   [np.sqrt(0.982) * term for term in _decay[1]]
+        decay[3] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[3]] + \
+                   [np.sqrt(0.982) * term for term in _decay[3]]
 
-        decay[8] = [0.995 * term for term in self.FLS.raw_decay[2]] + \
-                   [0.005 * term for term in _decay[8]]
-        decay[9] = [0.995 * term for term in self.FLS.raw_decay[3]] + \
-                   [0.005 * term for term in _decay[9]]
+        decay[8] = [np.sqrt(0.995) * term for term in self.FLS.raw_decay[2]] + \
+                   [np.sqrt(0.005) * term for term in _decay[8]]
+        decay[9] = [np.sqrt(0.995) * term for term in self.FLS.raw_decay[3]] + \
+                   [np.sqrt(0.005) * term for term in _decay[9]]
 
         return decay
