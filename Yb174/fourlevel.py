@@ -39,7 +39,7 @@ mJ[1] = mJ[3] = 1 / 2
 class FourLevelSystem(System):
     linewidth = 19.6 * 10 ** 6  # Hz
 
-    def __init__(self, delta=0.0, sat=1.0, polarization=(1, 0, 0), B=0.0):
+    def __init__(self, delta=0.0, sat=0.0, polarization=(1, 0, 0), B=0.0):
         """Model of the 2S1/2-2P1/2 transition in 174Yb+ as a four-level system.
 
         :param delta: Laser detuning from resonance in MHz.

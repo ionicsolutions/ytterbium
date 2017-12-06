@@ -42,7 +42,7 @@ mJ[5] = 3 / 2
 class SixLevelSystem(System):
     linewidth = 4.11 * 10 ** 6  # Hz
 
-    def __init__(self, delta=0.0, sat=0.5, polarization=(1, 0, 0), B=2.5):
+    def __init__(self, delta=0.0, sat=0.0, polarization=(1, 0, 0), B=0.0):
         """Model of the 2D3/2-3D[3/2]1/2 transition in 174Yb+ as a six-level system.
 
         Based on the model described in H. Meyer (2014), the level numbering is identical.
