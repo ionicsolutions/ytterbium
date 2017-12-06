@@ -4,7 +4,7 @@
 
 `ytterbium` is a small Python package built on [QuTiP](http://github.com/qutip)
 to simulate the full level-structure of <sup>171</sup>Yb<sup>+</sup>
-and <sup>174</sup>Yb<sup>+</sup> ions.
+and <sup>174</sup>Yb<sup>+</sup> ions by solving Lindblad form master equations.
 
 
 ## Requirements
@@ -19,9 +19,10 @@ and will not work correctly on Python 2.7.x without modifications.
 ## Getting Started
 
 If you have never worked with `qutip` before, starting with the two-level model of the
-S-P transition in 174Yb+ (`Yb174.twolevel`) is a good idea. Once you are familiar with
+S-P transition in <sup>174</sup>Yb<sup>+</sup> (`Yb174.twolevel`) and the corresponding
+tests (`test.Yb174.test_twolevel`) is recommended. Once you are familiar with
 the way `qutip` works and how the models in `ytterbium` are structured, looking at some
-of the example simulations provided is helpful.
+of the example simulations provided is helpful to set up your own calculations.
 
 
 ## Literature
@@ -34,5 +35,3 @@ Throughout the package, we reference the following literature:
   Dissertation, University of Cambridge (2014)
 - S. Olmschenk et al.: *Manipulation and detection of a trapped Yb+ hyperfine qubit.*
   Phys. Rev. A **76**, 052314 (2007)
-
-
