@@ -19,11 +19,6 @@ from multiprocessing import Pool
 import qutip
 
 
-def mesolve_worker(arguments):
-    H, psi0, times, c_ops, e_ops = arguments
-    return qutip.mesolve(H, psi0, times, c_ops, e_ops)
-
-
 def mesolve(list_of_H, psi0, times, c_ops, e_ops):
     """Wrapper for parallel evaluation of `qutip.mesolve`.
 
@@ -34,6 +29,5 @@ def mesolve(list_of_H, psi0, times, c_ops, e_ops):
     """
     worklist = [(H, psi0, times, c_ops, e_ops) for H in list_of_H]
     with Pool(processes=os.cpu_count()) as p:
-        it = p.imap(mesolve_worker, worklist)
-        results = [result for result in it]
+        results = p.starmap(qutip.mesolve, worklist)
     return results
