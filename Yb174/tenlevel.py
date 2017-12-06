@@ -33,7 +33,7 @@ cg[2][9] = cg[9][2] = cg[4][8] = cg[8][4] = 1 / np.sqrt(6)
 class TenLevelSystem:
 
     def __init__(self, delta_SP=0.0, sat_SP=0.0, polarization_SP=(1, 0, 0),
-                 delta_D=0.0, sat_D=0.0, polarization_D=0.0, B=0.0):
+                 delta_D=0.0, sat_D=0.0, polarization_D=(1, 0, 0), B=0.0):
         """Combined model of both 2S1/2-2P1/2 and 2D3/2-3D[3/2]1/2 transitions in 174Yb+
         as a ten-level system.
 
