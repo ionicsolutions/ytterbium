@@ -36,7 +36,26 @@ def mesolve(hamiltonians, psi0, times, c_ops, e_ops):
 
 
 def vary(system, parameters=(), **kwargs):
-    """Generate a list of Hamiltonians for use in `parallelize.mesolve`."""
+    """Generate a list of Hamiltonians for use in `parallelize.mesolve`.
+
+    If only one parameter is to be varied, the parameter and the values it
+    should take on can be provided as a keyword argument:
+
+    >>> vary(TwoLevelSystem, delta=np.linspace(-10.0, 10.0, num=30))
+
+    When several parameters vary, they need to be provided as a list or
+    tuple which defines the order of the Hamiltonians:
+
+    >>> vary(TwoLevelSystem, parameters=(("delta", [-100.0, -10.0, 0.0]), ("sat", [0.1, 1.0])))
+
+    The function returns two values:
+    The first (*hamiltonians*) is the list of Hamiltonians which can be passed to `parallelize.mesolve`.
+    The second (*system_parameters*) is a list of the parameter values used to generate the Hamiltonians:
+
+    >>> hamiltonians, system_parameters = vary(...)
+    >>> system_parameters
+    [[-100.0, 0.1], [-100.0, 1.0], [-10.0, 0.1], [-10.0, 1.0], [0.0, 0.1], [0.0, 1.0]]
+    """
     if not parameters:
         if len(kwargs) > 1:
             raise ValueError(
@@ -46,9 +65,10 @@ def vary(system, parameters=(), **kwargs):
         else:
             parameters = [(parameter, range_) for parameter, range_ in kwargs.items()]
 
+    initial = {}  # check that all parameters exist and record their initial value
     for parameter, range_ in parameters:
         try:
-            _ = getattr(system, parameter)
+            initial[parameter] = getattr(system, parameter)
         except AttributeError:
             raise AttributeError("System has no parameter '%s'." % parameter)
 
@@ -63,12 +83,15 @@ def vary(system, parameters=(), **kwargs):
             try:
                 setattr(system, parameter, value)
             except AttributeError:
-                raise AttributeError("System has no settable parameter '%s'." % parameter)
+                raise AttributeError("Parameter '%s' cannot be set." % parameter)
             else:
                 hamiltonians.append(system.H)
         system_parameters.append([value for parameter, value in parameter_set])
 
     if np.all([np.isclose(hamiltonians[0].full(), H.full()) for H in hamiltonians[1:]]):
         raise ValueError("All generated Hamiltonians are identical.")
+
+    for parameter, value in initial.items():  # reset system to avoid confusing behavior
+        setattr(system, parameter, value)
 
     return hamiltonians, system_parameters
