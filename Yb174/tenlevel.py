@@ -25,7 +25,7 @@ from Yb174.sixlevel import SixLevelSystem
 cg = np.zeros((10, 10))
 cg[1][6] = cg[6][1] = cg[3][7] = cg[7][3] = 1 / np.sqrt(3)
 cg[1][7] = cg[7][1] = cg[3][6] = cg[6][3] = np.sqrt(2 / 3)
-cg[0][8] = cg[8][0] = cg[6][9] = cg[9][6] = 1 / np.sqrt(2)
+cg[0][8] = cg[8][0] = cg[5][9] = cg[9][5] = 1 / np.sqrt(2)
 cg[2][8] = cg[8][2] = cg[4][9] = cg[9][4] = 1 / np.sqrt(3)
 cg[2][9] = cg[9][2] = cg[4][8] = cg[8][4] = 1 / np.sqrt(6)
 
@@ -108,9 +108,10 @@ class TenLevelSystem:
         decay[3] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[3]] + \
                    [np.sqrt(0.982) * term for term in _decay[3]]
 
-        decay[8] = [np.sqrt(0.995) * term for term in self.FLS.raw_decay[2]] + \
-                   [np.sqrt(0.005) * term for term in _decay[8]]
-        decay[9] = [np.sqrt(0.995) * term for term in self.FLS.raw_decay[3]] + \
-                   [np.sqrt(0.005) * term for term in _decay[9]]
+        # branching ratio to D3/2 from S. Olmschenk et al. (2007)
+        decay[8] = [np.sqrt(0.99499) * term for term in self.FLS.raw_decay[2]] + \
+                   [np.sqrt(0.00501) * term for term in _decay[8]]
+        decay[9] = [np.sqrt(0.99499) * term for term in self.FLS.raw_decay[3]] + \
+                   [np.sqrt(0.00501) * term for term in _decay[9]]
 
         return decay
