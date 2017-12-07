@@ -101,14 +101,17 @@ class TenLevelSystem:
         _decay[9] = [np.sqrt(2 * np.pi * self.FLS.linewidth) * cg[i][9] * self.basis[i] * self.basis[9].dag()
                      for i in (0, 2, 4, 5)]
 
+        # decay from the meta-stable 2D3/2 state to 2S1/2 is neglected in this model (lifetime > 50 ms)
+
         # Complete decay
+        # branching ratio 2D[3/2]1/2 to 2S1/2 as quoted in H. Meyer et al. (2012)
         decay = [[] for _ in range(10)]
-        decay[0] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[0]] + \
+        decay[1] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[1]] + \
                    [np.sqrt(0.982) * term for term in _decay[1]]
         decay[3] = [np.sqrt(0.018) * term for term in self.SLS.raw_decay[3]] + \
                    [np.sqrt(0.982) * term for term in _decay[3]]
 
-        # branching ratio to D3/2 from S. Olmschenk et al. (2007)
+        # branching ratio 2P1/2 to 2D3/2 from S. Olmschenk et al. (2007)
         decay[8] = [np.sqrt(0.99499) * term for term in self.FLS.raw_decay[2]] + \
                    [np.sqrt(0.00501) * term for term in _decay[8]]
         decay[9] = [np.sqrt(0.99499) * term for term in self.FLS.raw_decay[3]] + \
