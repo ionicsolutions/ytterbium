@@ -44,7 +44,7 @@ class TestRepumping(unittest.TestCase):
         self.assertTrue(final_d_population > 1 - 1e-6)
 
     def test_branching_ratio(self):
-        psi0 = self.TLS.basis[8]
+        psi0 = 1 / np.sqrt(2) * (self.TLS.basis[8] + self.TLS.basis[9])
 
         times = np.linspace(0, 0.1 * 10 ** -6, num=10000)
 
@@ -60,8 +60,6 @@ class TestRepumping(unittest.TestCase):
         final_s_population = result.expect[6][-1] + result.expect[7][-1]
         final_p_population = result.expect[8][-1] + result.expect[9][-1]
         final_d_population = result.expect[0][-1] + result.expect[2][-1] + result.expect[4][-1] + result.expect[5][-1]
-
-        print(final_s_population, final_d_population, final_p_population, final_s_population + final_d_population)
 
         self.assertTrue(final_s_population + final_d_population > 0.9999)
         self.assertTrue(abs(final_s_population - 0.995) < 0.001)
