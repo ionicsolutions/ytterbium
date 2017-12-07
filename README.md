@@ -31,7 +31,11 @@ Throughout the package, we reference the following literature:
 
 - S. Ejtemaee et al.: *Optimization of Yb+ fluorescence and hyperfine-qubit detection.*
   Phys. Rev. A **82**, 063419 (2010)
+- H. Meyer et al.: *Laser spectroscopy and cooling of Yb<sup>+</sup> ions on a deep-UV transition*
+  Phys. Rev. A **85**, 012502 (2012)
 - H. Meyer: *A fibre-cavity based photonic interface for a single ion.*
   Dissertation, University of Cambridge (2014)
-- S. Olmschenk et al.: *Manipulation and detection of a trapped Yb+ hyperfine qubit.*
+- S. Olmschenk et al.: *Manipulation and detection of a trapped Yb<sup>+</sup> hyperfine qubit.*
   Phys. Rev. A **76**, 052314 (2007)
+- S. Olmschenk: *Quantum teleportation between distant matter qubits.*
+  Dissertation, University of Michigan (2009)
