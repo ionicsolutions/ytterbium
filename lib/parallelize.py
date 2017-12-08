@@ -85,8 +85,8 @@ def vary(system, **kwargs):
             except AttributeError:
                 raise AttributeError(
                     "Parameter '%s' cannot be set." % parameter)
-            else:
-                hamiltonians.append(system.H)
+            
+        hamiltonians.append(system.H)
         parameters.append([value for parameter, value in parameter_set])
 
     # verify that the generated Hamiltonians differ
