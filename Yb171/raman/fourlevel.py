@@ -18,7 +18,7 @@ import itertools
 import numpy as np
 import qutip
 
-# Clebsch-Gordon coefficients
+# Clebsch-Gordan coefficients
 cg = np.zeros((4, 4))
 cg[0][3] = cg[3][0] = 1/np.sqrt(3)
 cg[1][3] = cg[3][1] = cg[2][3] = cg[3][2] = -1/np.sqrt(3)

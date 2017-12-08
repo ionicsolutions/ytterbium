@@ -31,5 +31,6 @@ class System:
     def polarization(self, vector):
         length = np.sqrt(np.sum([vector[i] ** 2 for i in range(3)]))
         if length <= 0.0:
-            raise ValueError("Polarization vector has to be of non-zero length.")
+            raise ValueError(
+                "Polarization vector has to be of non-zero length.")
         self._polarization = tuple(vector[i] / length for i in range(3))

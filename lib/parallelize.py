@@ -59,16 +59,20 @@ def vary(system, **kwargs):
     if not kwargs:
         raise ValueError("No parameter to vary.")
     else:
-        variable_parameters = [(parameter, range_) for parameter, range_ in kwargs.items()]
+        variable_parameters = [(parameter, range_)
+                               for parameter, range_ in kwargs.items()]
 
-    initial = {}  # check that all parameters exist and record their initial value
+    # check the existence and record the initial value of all parameters
+    initial = {}
     for parameter, range_ in variable_parameters:
         try:
             initial[parameter] = getattr(system, parameter)
         except AttributeError:
             raise AttributeError("System has no parameter '%s'." % parameter)
 
-    expanded_parameters = [itertools.product([parameter], range_) for parameter, range_ in variable_parameters]
+    # generate the parameter space
+    expanded_parameters = [itertools.product([parameter], range_)
+                           for parameter, range_ in variable_parameters]
     parameter_space = itertools.product(*expanded_parameters)
 
     hamiltonians = []
@@ -79,15 +83,20 @@ def vary(system, **kwargs):
             try:
                 setattr(system, parameter, value)
             except AttributeError:
-                raise AttributeError("Parameter '%s' cannot be set." % parameter)
+                raise AttributeError(
+                    "Parameter '%s' cannot be set." % parameter)
             else:
                 hamiltonians.append(system.H)
         parameters.append([value for parameter, value in parameter_set])
 
-    if np.all([np.isclose(hamiltonians[0].full(), H.full()) for H in hamiltonians[1:]]):
+    # verify that the generated Hamiltonians differ
+    identical = [np.isclose(hamiltonians[0].full(), H.full())
+                 for H in hamiltonians[1:]]
+    if np.all(identical):
         raise ValueError("All generated Hamiltonians are identical.")
 
-    for parameter, value in initial.items():  # reset system to avoid confusing behavior
+    # reset system to initial parameter values to avoid confusing behavior
+    for parameter, value in initial.items():
         setattr(system, parameter, value)
 
     return hamiltonians, parameters
