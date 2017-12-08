@@ -13,12 +13,15 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+
+__all__ = ["SixLevelSystem"]
+
 import itertools
 
 import numpy as np
 import qutip
 
-from lib.system import System
+from ytterbium.lib.system import System
 
 # Clebsch-Gordan coefficients
 cg = np.zeros((6, 6))

@@ -13,13 +13,16 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+
+__all__ = ["TenLevelSystem"]
+
 import itertools
 
 import numpy as np
 import qutip
 
-from Yb174.fourlevel import FourLevelSystem
-from Yb174.sixlevel import SixLevelSystem
+from ytterbium.Yb174 import FourLevelSystem
+from ytterbium.Yb174 import SixLevelSystem
 
 # inter-system Clebsch-Gordan coefficients
 cg = np.zeros((10, 10))
