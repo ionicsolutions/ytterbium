@@ -14,7 +14,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__all__ = ["FourLevelSystem"]
+__all__ = ["NineLevelSystem"]
 
 import itertools
 
@@ -102,16 +102,11 @@ class NineLevelSystem:
 
         # Combined decay terms
 
-        decay = [np.sqrt(0.05) * term for term in _decay] + \
-                [np.sqrt(0.95) * term for term in self.ELS.decay]
+        decay = [np.sqrt(0.005) * term for term in _decay] + \
+                [np.sqrt(0.995) * term for term in self.ELS.decay]
 
         return decay
 
     @property
     def omega(self):
         return None
-
-
-
-
-
