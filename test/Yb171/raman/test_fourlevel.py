@@ -3,9 +3,7 @@ import unittest
 import matplotlib.pyplot as plt
 import numpy as np
 import qutip
-from scipy.optimize import curve_fit
 
-from lib.parallelize import mesolve
 from Yb171.raman.fourlevel import FourLevelSystem
 
 
