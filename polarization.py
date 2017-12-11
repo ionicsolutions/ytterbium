@@ -13,4 +13,20 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-from ytterbium.parallelize import *
+
+__all__ = ["normalize"]
+
+import numpy as np
+
+
+def normalize(vector):
+    """Normalize polarization *vector*."""
+    if len(vector) != 3:
+        raise ValueError(
+            "Polarization vector must have exactly 3 components.")
+    _vector = np.array(vector)
+    length = np.sqrt(np.sum(np.power(_vector, 2)))
+    if length <= 0.0 or not np.all(np.isreal(_vector)):
+        raise ValueError(
+            "Polarization vector has to be real and of non-zero length.")
+    return tuple(_vector/length)

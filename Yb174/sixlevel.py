@@ -21,7 +21,7 @@ import itertools
 import numpy as np
 import qutip
 
-from ytterbium.lib.system import System
+from ytterbium.polarization import normalize
 
 # Clebsch-Gordan coefficients
 cg = np.zeros((6, 6))
@@ -43,7 +43,7 @@ mJ[5] = 3 / 2
 
 
 # noinspection PyPep8Naming
-class SixLevelSystem(System):
+class SixLevelSystem:
     linewidth = 4.11 * 10 ** 6  # Hz
 
     def __init__(self, delta=0.0, sat=0.0, polarization=(1, 0, 0), B=0.0):
@@ -60,13 +60,22 @@ class SixLevelSystem(System):
                              (pi, sigma+, sigma-).
         :param B: Magnetic field in Gauss.
         """
-        super(SixLevelSystem, self).__init__()
+        self._polarization = (1, 0, 0)
+
         self.delta = delta
         self.sat = sat
         self.polarization = polarization
         self.B = B
 
         self.basis = [qutip.states.basis(6, i) for i in range(6)]
+
+    @property
+    def polarization(self):
+        return self._polarization
+
+    @polarization.setter
+    def polarization(self, vector):
+        self._polarization = normalize(vector)
 
     @property
     def H(self):

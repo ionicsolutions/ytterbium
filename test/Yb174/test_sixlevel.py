@@ -5,7 +5,7 @@ import numpy as np
 import qutip
 from scipy.optimize import curve_fit
 
-from Yb174.sixlevel import SixLevelSystem
+from ytterbium.Yb174 import SixLevelSystem
 
 
 def exponential_decay(t, tau):

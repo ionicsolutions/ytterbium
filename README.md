@@ -9,7 +9,7 @@ and <sup>174</sup>Yb<sup>+</sup> ions by solving Lindblad form master equations.
 In addition to various models of commonly encountered experimental situations,
 `ytterbium` contains a small library for parallelized computations which
 provides a significant speedup when a system needs to be solved for many
-different parameter values (`lib.parallelize`).
+different parameter values (`parallelize`).
 
 ## Requirements
 
