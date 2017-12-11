@@ -99,7 +99,8 @@ class TestSingleLaser(unittest.TestCase):
 def resonance_peak(pulse_duration):
     def excited_state_population(detuning, delta0, omega):
         omega_ = np.sqrt(omega ** 2 + (detuning - delta0) ** 2)
-        return omega**2/omega_**2 * np.sin(omega_/2 * pulse_duration)**2
+        return omega ** 2 / omega_ ** 2 * np.sin(omega_ / 2 * pulse_duration) ** 2
+
     return excited_state_population
 
 

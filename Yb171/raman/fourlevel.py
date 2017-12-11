@@ -23,8 +23,8 @@ import qutip
 
 # Clebsch-Gordan coefficients
 cg = np.zeros((4, 4))
-cg[0][3] = cg[3][0] = 1/np.sqrt(3)
-cg[1][3] = cg[3][1] = cg[2][3] = cg[3][2] = -1/np.sqrt(3)
+cg[0][3] = cg[3][0] = 1 / np.sqrt(3)
+cg[1][3] = cg[3][1] = cg[2][3] = cg[3][2] = -1 / np.sqrt(3)
 
 # mF factors
 mF = np.zeros(4)
@@ -88,7 +88,7 @@ class FourLevelSystem:
 
     @property
     def omega(self):
-        _omega_pi = 2 *np.pi * self.linewidth * np.sqrt(self.sat_pi/2)
+        _omega_pi = 2 * np.pi * self.linewidth * np.sqrt(self.sat_pi / 2)
         _omega_sig = 2 * np.pi * self.linewidth * np.sqrt(self.sat_sig / 2)
 
         omega = np.zeros((4, 4))

@@ -14,7 +14,7 @@ class TestDrivenSystem(unittest.TestCase):
 
         self.population = [state * state.dag() for state in self.ELS.basis]
 
-        self.times = np.linspace(0.0, 1.0*10**-6, num=1000)
+        self.times = np.linspace(0.0, 1.0 * 10 ** -6, num=1000)
 
     def test_drive_it(self):
         psi0 = self.ELS.basis[2]

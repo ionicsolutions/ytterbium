@@ -21,7 +21,7 @@ import itertools
 import numpy as np
 import qutip
 
-from ytterbium.Yb171 import EightLevelSystem
+from ytterbium.Yb171.eightlevel import EightLevelSystem, cg
 from ytterbium.polarization import normalize
 
 
@@ -77,12 +77,13 @@ class NineLevelSystem:
 
     @property
     def H(self):
-        laser_field = [2 * np.pi
-                       * (self.detuning * 10 ** 9 + self.delta * 10 ** 6)
-                       * self.basis[i] * self.basis[i].dag()
-                       for i in (0, 2)]
+        laser_field = [2 * np.pi * self.delta * 10 ** 6
+                       * self.basis[0] * self.basis[0].dag()]
 
-        off_diagonal_elements = []
+        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j] ** 2
+                                 * self.basis[i] * self.basis[j].dag()
+                                 for i, j in itertools.product(range(8),
+                                                               range(8))]
 
         H = self.ELS.H + sum(laser_field) + sum(off_diagonal_elements)
 
@@ -109,4 +110,24 @@ class NineLevelSystem:
 
     @property
     def omega(self):
-        return None
+        """Rabi frequencies."""
+        pi, sigma_plus, sigma_minus = self.polarization_S
+        _omega = 2 * np.pi * self.ELS.linewidth * np.sqrt(self.sat_S / 2)
+
+        omega = np.zeros((8, 8))
+        omega[0][7] = omega[7][0] = \
+            omega[1][4] = omega[4][1] = \
+            omega[1][6] = omega[6][1] = \
+            omega[2][7] = omega[7][2] = _omega * sigma_plus
+
+        omega[0][5] = omega[5][0] = \
+            omega[2][5] = omega[5][2] = \
+            omega[3][4] = omega[4][3] = \
+            omega[3][6] = omega[6][3] = _omega * sigma_minus
+
+        omega[0][6] = omega[6][0] = \
+            omega[1][5] = omega[5][1] = \
+            omega[2][4] = omega[4][2] = \
+            omega[3][7] = omega[7][3] = _omega * pi
+
+        return omega
