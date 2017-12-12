@@ -8,6 +8,8 @@ python:
   - 3.6
 
 install:
+  - pip install coverage
+  - pip install coveralls
   - pip install numpy
   - pip install scipy
   - pip install matplotlib
@@ -15,4 +17,8 @@ install:
   - pip install qutip
 
 script:
-  - python -m unittest discover -t ..
+  - coverage -m unittest discover -t ..
+
+after_success:
+  - coverage combine
+  - coveralls

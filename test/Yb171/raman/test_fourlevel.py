@@ -134,7 +134,7 @@ class TestRamanTransitions(unittest.TestCase):
             plt.show()
             plt.close()
 
-    def test_resonance_peak(self):
+    def resonance_peak(self):
         psi0 = self.FLS.basis[0]
 
         hamiltonians, system_parameters = vary(self.FLS, delta=np.linspace(-1.0, 1.0, num=21))
