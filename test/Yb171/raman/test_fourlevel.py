@@ -5,7 +5,7 @@ import numpy as np
 import qutip
 from scipy.optimize import curve_fit
 
-import ytterbium as yb
+from parallelize import vary, mesolve
 from Yb171.raman import FourLevelSystem
 
 
@@ -138,9 +138,9 @@ class TestRamanTransitions(unittest.TestCase):
     def test_resonance_peak(self):
         psi0 = self.FLS.basis[0]
 
-        hamiltonians, system_parameters = yb.vary(self.FLS, delta=np.linspace(-1.0, 1.0, num=21))
+        hamiltonians, system_parameters = vary(self.FLS, delta=np.linspace(-1.0, 1.0, num=21))
 
-        results = yb.mesolve(hamiltonians, psi0, self.times, self.FLS.decay, self.population)
+        results = mesolve(hamiltonians, psi0, self.times, self.FLS.decay, self.population)
 
         if False:
             for i, params in enumerate(system_parameters):
@@ -154,7 +154,7 @@ class TestRamanTransitions(unittest.TestCase):
 
         popt, pcov = curve_fit(resonance_peak(20.0), deltas, population, p0=[0.0, 1.0])
 
-        if True:
+        if False:
             pdeltas = np.linspace(np.min(deltas), np.max(deltas), num=1000)
             plt.plot(deltas, population, "o")
             plt.plot(pdeltas, resonance_peak(10.0)(pdeltas, *popt), "--")

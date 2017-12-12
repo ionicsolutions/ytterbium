@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import qutip
 
-from ytterbium.Yb171 import EightLevelSystem
+from Yb171 import EightLevelSystem
 
 
 class TestDrivenSystem(unittest.TestCase):

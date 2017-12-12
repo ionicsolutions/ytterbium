@@ -5,7 +5,7 @@ import numpy as np
 import qutip
 from scipy.optimize import curve_fit
 
-from ytterbium.Yb174 import TenLevelSystem
+from Yb174 import TenLevelSystem
 
 
 def exponential_decay(t, tau):
@@ -215,7 +215,7 @@ class TestPulsedSixLevelSystem(unittest.TestCase):
                 s_population[field].append(result.expect[6][-1] +
                                            result.expect[7][-1])
 
-        if True:
+        if False:
             for field, s_pop in s_population.items():
                 plt.plot(self.detunings, s_pop, "o", label="%0.2f G" % field)
 
@@ -247,7 +247,7 @@ class TestPulsedSixLevelSystem(unittest.TestCase):
                 s_population[field].append(result.expect[6][-1] +
                                            result.expect[7][-1])
 
-        if True:
+        if False:
             for field, s_pop in s_population.items():
                 plt.plot(self.detunings, s_pop, "o", label="%0.2f G" % field)
 
