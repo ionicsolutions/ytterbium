@@ -3,7 +3,7 @@ import itertools
 
 import numpy as np
 
-from ytterbium.polarization import normalize
+from polarization import normalize
 
 
 class TestSystem(unittest.TestCase):
