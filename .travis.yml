@@ -1,0 +1,16 @@
+language: python
+
+python:
+  - "3.6"
+
+cache: pip
+
+install:
+  - pip install numpy
+  - pip install scipy
+  - pip install matplotlib
+  - pip install qutip
+
+script:
+  - python -m unittest discover test
+  
