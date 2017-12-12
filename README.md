@@ -11,6 +11,8 @@ In addition to various models of commonly encountered experimental situations,
 provides a significant speedup when a system needs to be solved for many
 different parameter values (`parallelize`).
 
+[![build-status](https://api.travis-ci.org/ionicsolutions/ytterbium.svg?branch=master)](http://travis-ci.org/ionicsolutions/ytterbium)
+
 ## Requirements
 
 To run `ytterbium`, the [General Requirements for running QuTiP](http://qutip.org/docs/3.1.0/installation.html)
