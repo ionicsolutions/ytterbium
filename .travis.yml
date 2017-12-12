@@ -15,4 +15,4 @@ install:
   - pip install qutip
 
 script:
-  - python -m unittest discover
+  - python -m unittest discover -t ..
