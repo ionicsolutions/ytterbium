@@ -12,7 +12,7 @@ provides a significant speedup when a system needs to be solved for many
 different parameter values (`parallelize`).
 
 [![build-status](https://api.travis-ci.org/ionicsolutions/ytterbium.svg?branch=master)](http://travis-ci.org/ionicsolutions/ytterbium)
-[![Coverage Status](https://coveralls.io/repos/github/ionicsolutions/ytterbium/badge.svg?branch=master)](https://coveralls.io/github/ionicsolutions/ytterbium?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/ionicsolutions/ytterbium/badge.svg)](https://coveralls.io/github/ionicsolutions/ytterbium)
 
 ## Requirements
 
