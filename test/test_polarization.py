@@ -3,7 +3,7 @@ import itertools
 
 import numpy as np
 
-from polarization import normalize
+from ..polarization import normalize
 
 
 class TestSystem(unittest.TestCase):

@@ -16,4 +16,3 @@ install:
 
 script:
   - python -m unittest discover
-  

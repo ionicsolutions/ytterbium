@@ -5,8 +5,8 @@ import numpy as np
 import qutip
 from scipy.optimize import curve_fit
 
-from parallelize import vary, mesolve
-from Yb171.raman.fourlevel import FourLevelSystem
+from ....parallelize import vary, mesolve
+from ....Yb171.raman.fourlevel import FourLevelSystem
 
 
 class TestSingleLaser(unittest.TestCase):

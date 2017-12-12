@@ -21,7 +21,7 @@ import itertools
 import numpy as np
 import qutip
 
-from Yb174 import FourLevelSystem, SixLevelSystem
+from . import FourLevelSystem, SixLevelSystem
 
 # inter-system Clebsch-Gordan coefficients
 cg = np.zeros((10, 10))
