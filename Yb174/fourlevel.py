@@ -73,7 +73,7 @@ class FourLevelSystem:
     @property
     def H(self):
         """Full Hamiltonian of the system."""
-        laser_field = [2 * np.pi * self.delta * 10 ** 6
+        laser_field = [2 * np.pi * -self.delta * 10 ** 6
                        * self.basis[i] * self.basis[i].dag()
                        for i in (2, 3)]
 

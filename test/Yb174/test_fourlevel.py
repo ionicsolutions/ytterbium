@@ -232,6 +232,98 @@ class TestDrivenSystem(unittest.TestCase):
         self.assertTrue(result.expect[2][-1] - result.expect[3][-1] < 1e-6)
 
 
+class TestMagneticField(unittest.TestCase):
+
+    def setUp(self):
+        self.FLS = FourLevelSystem(sat=0.5)
+
+        self.population = [state * state.dag() for state in self.FLS.basis]
+
+        self.times = np.linspace(0, 2 * 10 ** -6, num=500)
+
+    def test_sigma_plus_is_sigma_plus(self):
+        """If the laser is blue-detuned, increasing the magnetic field
+        brings the sigma-plus transition into resonance.
+        """
+        psi0 = self.FLS.basis[0]
+
+        fields = np.linspace(0, 10.0, num=30)
+
+        self.FLS.delta = 5 * 1.4 * (1/2 * 2 + 1/2 * 3/2)
+        self.FLS.polarization = (0, 1, 0)
+
+        excited = []
+        excited_max = []
+        for field in fields:
+            self.FLS.B = field
+            result = qutip.mesolve(self.FLS.H, psi0,
+                                   self.times, self.FLS.decay, self.population)
+            excited.append((result.expect[3], "%0.2f G" % field))
+            excited_max.append(np.max(result.expect[3]))
+
+        if False:
+            plt.plot(fields, excited_max, "o")
+            plt.show()
+            plt.close()
+
+        if False:
+            for trace, label in excited:
+                plt.plot(self.times, trace, label=label)
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        max_index = np.argmax(excited_max)
+        max_field = fields[max_index]
+        field_step = abs(max_field - fields[max_index - 1])
+
+        self.assertTrue(4 < max_field < 6)
+        self.assertTrue(max_field - field_step <= 5 <= max_field + field_step)
+
+    def test_pi_transition_detuning(self):
+        """For a positive magnetic field, the pi transition with negative
+        mJ coefficients is blue-detuned, the pi transition with positive
+        mJ coefficients is red-detuned from the bare atomic resonance.
+        """
+        fields = np.linspace(8.0, 16.0, num=30)
+
+        self.FLS.polarization = (1, 0, 0)
+
+        for i in (0, 1):
+            psi0 = self.FLS.basis[i]
+
+            self.FLS.delta = (-1) ** i * 12 * 1.4 * (1 / 2 * 2 - 1 / 2 * 3 / 2)
+
+            excited = []
+            excited_max = []
+            for field in fields:
+                self.FLS.B = field
+                result = qutip.mesolve(self.FLS.H, psi0, self.times,
+                                       self.FLS.decay, self.population)
+                excited.append((result.expect[2 + i], "%0.2f G" % field))
+                excited_max.append(np.max(result.expect[2 + i]))
+
+            if False:
+                plt.plot(fields, excited_max, "o")
+                plt.show()
+                plt.close()
+
+            if False:
+                for trace, label in excited:
+                    plt.plot(self.times, trace, label=label)
+                plt.legend()
+                plt.show()
+                plt.close()
+
+            max_index = np.argmax(excited_max)
+            max_field = fields[max_index]
+            field_step = abs(max_field - fields[max_index - 1])
+
+            self.assertTrue(11 < max_field < 13)
+            self.assertTrue(max_field - field_step <= 12
+                            <= max_field + field_step)
+
+
 class TestSpectroscopy(unittest.TestCase):
 
     def setUp(self):
