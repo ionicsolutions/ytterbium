@@ -16,7 +16,6 @@ class TestSingleLaser(unittest.TestCase):
         self.FLS = FourLevelSystem()
 
         self.population = [state * state.dag() for state in self.FLS.basis]
-        print(self.population)
         self.times = np.linspace(0, 10.0 * 10 ** -6, num=1000)
 
     def test_pi_saturation(self):
@@ -110,7 +109,7 @@ class TestRamanTransitions(unittest.TestCase):
         self.FLS = FourLevelSystem()
 
         self.population = [state * state.dag() for state in self.FLS.basis]
-        self.times = np.linspace(0, 20.0 * 10 ** -6, num=500)
+        self.times = np.linspace(0, 1.0 * 10 ** -6, num=1000)
 
         self.FLS.sat_pi = 1.0
         self.FLS.sat_sig = 1.0

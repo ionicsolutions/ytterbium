@@ -13,7 +13,7 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-from ytterbium.Yb174.twolevel import *
-from ytterbium.Yb174.fourlevel import *
-from ytterbium.Yb174.sixlevel import *
-from ytterbium.Yb174.tenlevel import *
+from .twolevel import *
+from .fourlevel import *
+from .sixlevel import *
+from .tenlevel import *

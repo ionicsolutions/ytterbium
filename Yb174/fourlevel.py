@@ -21,7 +21,7 @@ import itertools
 import numpy as np
 import qutip
 
-from ytterbium.polarization import normalize
+from polarization import normalize
 
 # Clebsch-Gordan coefficients
 cg = np.zeros((4, 4))

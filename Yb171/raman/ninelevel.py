@@ -21,8 +21,8 @@ import itertools
 import numpy as np
 import qutip
 
-from ytterbium.Yb171.eightlevel import EightLevelSystem, cg
-from ytterbium.polarization import normalize
+from Yb171.eightlevel import EightLevelSystem, cg
+from polarization import normalize
 
 
 # noinspection PyPep8Naming
