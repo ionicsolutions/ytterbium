@@ -24,13 +24,15 @@ on Python 3.6 and will not work correctly on Python <3.6 without modifications.
 
 ## Getting Started
 
-If you have never worked with `qutip` before, starting with the two-level model
-of the S-P transition in <sup>174</sup>Yb<sup>+</sup> (`Yb174.twolevel`) and
-the corresponding tests (`test.Yb174.test_twolevel`) is recommended.
+If you are familiar with the basics of `qutip`, we recommend to have a look at
+`simulations.examples.lineshape` to see both how the models in `ytterbium` are
+designed and how parallel evaluation can be used to speed up calculations.
 
-Once you are familiar with the way `qutip` works and how the models in
-`ytterbium` are structured, looking at some of the example simulations provided
-is helpful to set up your own calculations.
+If you have never worked with `qutip` or master equations before, we suggest
+you first read the excellent [introduction to the Lindblad Master Equation Solver](http://qutip.org/docs/3.1.0/guide/dynamics/dynamics-master.html)
+in the `qutip` documentation. Then, we recommend starting with the two-level model
+of the S-P transition in <sup>174</sup>Yb<sup>+</sup> (`Yb174.twolevel`) and
+the corresponding tests (`test.Yb174.test_twolevel`).
 
 
 ## Literature
