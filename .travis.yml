@@ -1,5 +1,9 @@
 language: python
 
+branches:
+  only:
+  - master
+
 python:
   - 3.6
 
@@ -11,5 +15,5 @@ install:
   - pip install qutip
 
 script:
-  - python -m unittest discover test
+  - python -m unittest discover
   

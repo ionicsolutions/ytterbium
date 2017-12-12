@@ -27,7 +27,7 @@ class TestSingleLaser(unittest.TestCase):
         result = qutip.mesolve(self.FLS.H, psi0, self.times, self.FLS.raw_decay[3][0],
                                self.population)
 
-        if True:
+        if False:
             for i in range(4):
                 plt.plot(self.times, result.expect[i], label="%d" % i)
             plt.legend()
