@@ -80,7 +80,7 @@ class EightLevelSystem:
     @property
     def H(self):
         """Full Hamiltonian of the system."""
-        laser_field = [2 * np.pi * self.delta * 10 ** 6
+        laser_field = [2 * np.pi * -self.delta * 10 ** 6
                        * self.basis[4] * self.basis[4].dag()]
         laser_field += [2 * np.pi * (self.delta - self.p_splitting) * 10 ** 6
                         * self.basis[i] * self.basis[i].dag()
@@ -97,7 +97,7 @@ class EightLevelSystem:
         magnetic_field += [2 * np.pi * self.quadratic_shift * self.B ** 2
                            * self.basis[0] * self.basis[0].dag()]
 
-        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j]
                                  * self.basis[i] * self.basis[j].dag()
                                  for i, j in itertools.product(range(8),
                                                                range(8))]

@@ -45,10 +45,10 @@ class TwoLevelSystem:
     @property
     def H(self):
         """Full Hamiltonian of the system."""
-        laser_field = [2 * np.pi * self.delta * 10 ** 6
+        laser_field = [2 * np.pi * -self.delta * 10 ** 6
                        * self.basis[1] * self.basis[1].dag()]
 
-        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j]
                                  * self.basis[i] * self.basis[j].dag()
                                  for i, j in itertools.product(range(2),
                                                                range(2))]

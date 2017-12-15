@@ -124,7 +124,7 @@ class TestDrivenSystem(unittest.TestCase):
     def test_saturation_two_level(self):
         psi0 = self.SLS.basis[0]
 
-        self.SLS.sat = 1.0
+        self.SLS.sat = 1/2
         self.SLS.polarization = (0, 1, 0)
 
         result = qutip.mesolve(self.SLS.H, psi0, self.times, self.SLS.raw_decay[1][0], self.population)

@@ -81,7 +81,7 @@ class FourLevelSystem:
                           * self.basis[i] * self.basis[i].dag()
                           for i in range(4)]
 
-        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j]
                                  * self.basis[i] * self.basis[j].dag()
                                  for i, j in itertools.product(range(4),
                                                                range(4))]
