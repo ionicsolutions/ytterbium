@@ -19,6 +19,9 @@ different parameter values (`parallelize`).
 To run `ytterbium`, the [General Requirements for running QuTiP](http://qutip.org/docs/3.1.0/installation.html)
 need to be fulfilled and `qutip` needs to be installed.
 
+The Clebsch-Gordan calculator, which is not required for normal use, additionally
+requires `sympy`.
+
 While it is possible to run `qutip` on Python 2.7.x, `ytterbium` is developed
 on Python 3.6 and will not work correctly on Python <3.6 without modifications.
 
