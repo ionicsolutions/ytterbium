@@ -3,7 +3,6 @@
 This small script follows Steck, Cesium Numbers v1.6 and the identical
 Steck, Rubidium Numbers v . See one of these documents for details.
 """
-import numpy as np
 import itertools
 
 import sympy
@@ -14,9 +13,9 @@ sI, sS = sympy.symbols("I S")
 # ground and excited state angular momentum
 sJg, sJe = sympy.symbols("Jg Je")
 
+# Defaults for 171Yb+ S-P transition
 Jg = sympy.S("1/2")
 Je = sympy.S("1/2")
-S = sympy.S("1/2")
 I = sympy.S("1/2")
 
 
