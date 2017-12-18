@@ -73,21 +73,3 @@ if __name__ == "__main__":
                         print_cg = "%ssqrt(%s)" % (sign, cg**2)
                         print("mF=%s to mF'=%s: %s" % (mF_g, mF_e, print_cg))
                 print("")
-
-
-# FROM McLoughlin's thesis, does not match
-
-def eq35mc(F, mF, Fprime, mFprime):
-    q = mF - mFprime
-    return np.power(-1.0, F - 1 + mFprime) * np.sqrt(2 * Fprime + 1) \
-           * N(wigner_3j(F, 1, Fprime,
-                         mF, -q, -mFprime))
-
-def eq36mc(F, Fprime, J, Jprime):
-    return np.power(-1.0, F + Jprime + 1 + I) \
-           * np.sqrt((2 * F + 1) * (2 * Jprime + 1)) \
-           * N(wigner_6j(Jprime, Fprime, I,
-                         F, J, 1))
-
-def factormc(F, mF, Fprime, mFprime, J, Jprime):
-    return eq35mc(F, mF, Fprime, mFprime) * eq36mc(F, Fprime, J, Jprime)
