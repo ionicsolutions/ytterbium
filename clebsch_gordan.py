@@ -3,13 +3,16 @@
 This small script follows Steck, Cesium Numbers v1.6 and the identical
 Steck, Rubidium Numbers v . See one of these documents for details.
 """
+
+__all__ = ["factor", "generate"]
+
 import itertools
 
 import sympy
 from sympy.physics.wigner import wigner_3j, wigner_6j
 
-# nuclear and electron spin
-sI, sS = sympy.symbols("I S")
+# nuclear spin
+sI = sympy.symbols("I")
 # ground and excited state angular momentum
 sJg, sJe = sympy.symbols("Jg Je")
 
@@ -23,14 +26,14 @@ I = sympy.S("1/2")
 def eq35(F, mF, Fprime, mFprime):
     sF, smF, sFprime, smFprime = sympy.symbols("F mF Fprime mFprime")
     q = mF - mFprime
-    expr = (-1)**(sFprime - 1 + smF) * sympy.sqrt(2 * sF + 1) \
+    expr = (-1) ** (sFprime - 1 + smF) * sympy.sqrt(2 * sF + 1) \
            * wigner_3j(Fprime, 1, F, mFprime, q, -mF)
     return expr.subs({sF: F, smF: mF, sFprime: Fprime, smFprime: mFprime})
 
 
 def eq36(F, Fprime, J, Jprime, I):
     sF, sFprime, sJ, sJprime = sympy.symbols("F Fprime J Jprime")
-    expr = (-1)**(sFprime + sJ + 1 + sI) \
+    expr = (-1) ** (sFprime + sJ + 1 + sI) \
            * sympy.sqrt((2 * sFprime + 1) * (2 * sJ + 1)) \
            * wigner_6j(J, Jprime, 1, Fprime, F, I)
     return expr.subs({sF: F, sFprime: Fprime, sJ: J, sJprime: Jprime, sI: I})
@@ -69,6 +72,6 @@ if __name__ == "__main__":
                         cg = factor(F_g, mF_g, F_e, mF_e)
                         # trick to display coefficient in usual form
                         sign = "-" if cg < 0 else ""
-                        print_cg = "%ssqrt(%s)" % (sign, cg**2)
+                        print_cg = "%ssqrt(%s)" % (sign, cg ** 2)
                         print("mF=%s to mF'=%s: %s" % (mF_g, mF_e, print_cg))
                 print("")

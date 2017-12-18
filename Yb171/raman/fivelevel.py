@@ -28,7 +28,7 @@ cg = np.zeros((4, 4))
 cg[0][2] = cg[2][0] = -1 / np.sqrt(2)
 cg[0][3] = cg[3][0] = 1 / np.sqrt(2)
 
-cg[1][2] = cg[2][1] = 1 / np.sqrt(2)
+cg[1][2] = cg[2][1] = - 1 / np.sqrt(2)
 cg[1][3] = cg[3][1] = 1 / np.sqrt(2)
 
 
