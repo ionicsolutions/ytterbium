@@ -2,7 +2,14 @@ import unittest
 
 from sympy import S
 
-from ..clebsch_gordan import factor
+from ..clebsch_gordan import factor, generate
+
+
+class TestGeneration(unittest.TestCase):
+
+    def test_generate(self):
+        self.assertEqual(generate(2, 4), [2, 3, 4])
+        self.assertEqual(generate(0.5, 3.5), [0.5, 1.5, 2.5, 3.5])
 
 
 class TestCesiumD2(unittest.TestCase):

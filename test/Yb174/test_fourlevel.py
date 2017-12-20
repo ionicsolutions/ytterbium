@@ -53,7 +53,7 @@ class TestUndrivenSystem(unittest.TestCase):
             perr = np.sqrt(np.diag(pcov))
 
             if False:
-                plt.plot(self.times, result.expect[2], "--")
+                plt.plot(self.times, result.expect[2 + i], "--")
                 plt.plot(self.times, exponential_decay(self.times, *popt), "o")
                 plt.show()
                 plt.close()
