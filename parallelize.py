@@ -17,14 +17,14 @@
 __all__ = ["mesolve", "vary"]
 
 import itertools
-import os
-from multiprocessing import Pool
+from multiprocessing import Pool, cpu_count
 
 import numpy as np
 import qutip
 
 
-def mesolve(hamiltonians, psi0, times, c_ops, e_ops):
+def mesolve(hamiltonians, rho0, tlist, c_ops=[], e_ops=[],
+            args={}, options=None, progress_bar=None, _safe_mode=True):
     """Wrapper for parallel evaluation of `qutip.mesolve`.
 
     Instead of a single Hamiltonian, a list of Hamiltonians to be
@@ -32,8 +32,9 @@ def mesolve(hamiltonians, psi0, times, c_ops, e_ops):
 
     All other arguments are identical to `qutip.mesolve`.
     """
-    worklist = [(H, psi0, times, c_ops, e_ops) for H in hamiltonians]
-    with Pool(processes=os.cpu_count()) as p:
+    worklist = [(H, rho0, tlist, c_ops, e_ops,
+                 args, options, None, _safe_mode) for H in hamiltonians]
+    with Pool(processes=cpu_count()) as p:
         results = p.starmap(qutip.mesolve, worklist)
     return results
 

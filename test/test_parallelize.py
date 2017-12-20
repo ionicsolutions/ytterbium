@@ -1,5 +1,9 @@
 import unittest
 
+import matplotlib.pyplot as plt
+import numpy as np
+import qutip
+
 from ..parallelize import vary, mesolve
 from ..Yb174.fourlevel import FourLevelSystem
 
@@ -47,6 +51,17 @@ class TestVary(unittest.TestCase):
         self.assertEqual(parameters[8][0], 50.0)
         self.assertEqual(parameters[8][1], 2)
 
+    def test_number_is_correct_single_parameter(self):
+        FLS = FourLevelSystem()
+        hamiltonians, _ = vary(FLS, B=range(10))
+        self.assertEqual(len(hamiltonians), 10)
+
+    def test_number_is_correct_multiple_parameters(self):
+        FLS = FourLevelSystem()
+
+        hamiltonians, _ = vary(FLS, B=range(5), delta=range(22))
+        self.assertEqual(len(hamiltonians), 110)
+
     def test_hamiltonians_single_parameter(self):
         FLS = FourLevelSystem()
 
@@ -70,6 +85,50 @@ class TestVary(unittest.TestCase):
 
         for i, hamiltonian in enumerate(rebuilt):
             self.assertEqual(hamiltonian, hamiltonians[i])
+
+
+class TestMesolve(unittest.TestCase):
+
+    def test_requires_iterable(self):
+        FLS = FourLevelSystem()
+
+        with self.assertRaises(TypeError):
+            _ = mesolve(FLS, FLS.basis[0], np.linspace(0, 0.1e-6, num=500),
+                        FLS.decay, FLS.basis[0] * FLS.basis[0].dag())
+
+    # issue #1
+    # def test_results_are_ordered(self):
+    #     detunings = [-100.0, -50.0, 0.0]
+    #
+    #     FLS = FourLevelSystem()
+    #     FLS.sat = 1.0
+    #     FLS.B = 0.5
+    #     populations = [state * state.dag() for state in FLS.basis]
+    #
+    #     hamiltonians, parameters = vary(FLS, delta=detunings)
+    #
+    #     times = np.linspace(0.0, 0.5e-6, num=500)
+    #
+    #     results = mesolve(hamiltonians, FLS.basis[0], times,
+    #                       FLS.decay, populations)
+    #
+    #     for i, multi_result in enumerate(results):
+    #         FLS.delta = detunings[i]
+    #         result = qutip.mesolve(FLS.H, FLS.basis[0], times,
+    #                                FLS.decay, populations)
+    #
+    #         if False:
+    #             for s, expect in enumerate(result.expect):
+    #                 plt.plot(times, expect, "-", label="%d single" % s)
+    #                 plt.plot(times[0::20], multi_result.expect[s][0::20],
+    #                          "*", label="%d multi" % s)
+    #             plt.legend()
+    #             plt.show()
+    #             plt.close()
+    #
+    #         for s, _ in enumerate(populations):
+    #             diff = (result.expect[s] - multi_result.expect[s]) < 1e-6
+    #             self.assertTrue(np.all(diff))
 
 
 if __name__ == "__main__":

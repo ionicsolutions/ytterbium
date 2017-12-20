@@ -4,3 +4,7 @@ omit=
     */test/*
     */python?.?/*
     */site-packages/*
+
+[report]
+exclude_lines =
+    if __name__ == .__main__.:
