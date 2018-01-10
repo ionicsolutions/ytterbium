@@ -95,7 +95,7 @@ class EightLevelSystem:
         laser_field += [2 * np.pi * (-self.delta + self.p_splitting) * 10 ** 6
                         * self.basis[i] * self.basis[i].dag()
                         for i in (5, 6, 7)]
-        laser_field += [2 * np.pi * self.s_splitting * 10 ** 6
+        laser_field += [2 * np.pi * -self.s_splitting * 10 ** 6
                         * self.basis[0] * self.basis[0].dag()]
 
         magnetic_field = [2 * np.pi * mF[i] * 1.4 * 10 ** 6 * self.B

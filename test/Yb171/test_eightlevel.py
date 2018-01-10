@@ -179,7 +179,21 @@ class TestDrivenSystem(unittest.TestCase):
             plt.show()
             plt.close()
 
-        #self.assertTrue(result.expect[2][-1] < 1e-6)
+        self.assertTrue(result.expect[2][-1] < 1e-3)
+
+        self.ELS.delta = 0.5 * self.ELS.p_splitting
+
+        result = qutip.mesolve(self.ELS.H, psi0, self.times,
+                               self.ELS.decay, self.population)
+
+        if False:
+            for i in range(8):
+                plt.plot(self.times, result.expect[i], label="%d" % i)
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        self.assertTrue(result.expect[2][-1] > 0.98)
 
     def test_s_splitting(self):
         psi0 = self.ELS.basis[0]
@@ -191,9 +205,61 @@ class TestDrivenSystem(unittest.TestCase):
         self.ELS.delta = self.ELS.s_splitting + self.ELS.p_splitting
 
         result = qutip.mesolve(self.ELS.H, psi0, self.times, self.ELS.decay, self.population)
+
         if False:
             for i in range(8):
                 plt.plot(self.times, result.expect[i], label="%d" % i)
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        self.assertTrue(result.expect[0][-1] < 1e-3)
+
+        self.ELS.delta = (self.ELS.s_splitting + self.ELS.p_splitting)/2
+
+        result = qutip.mesolve(self.ELS.H, psi0, self.times, self.ELS.decay, self.population)
+
+        if False:
+            for i in range(8):
+                plt.plot(self.times, result.expect[i], label="%d" % i)
+            plt.legend()
+            plt.show()
+            plt.close()
+
+        self.assertTrue(result.expect[0][-1] > 0.98)
+
+
+class TestMagneticField(unittest.TestCase):
+
+    def setUp(self):
+        self.ELS = EightLevelSystem()
+        self.population = [state * state.dag() for state in self.ELS.basis]
+        self.times = np.linspace(0.0, 0.2 * 10 ** -6, num=300)
+
+    def test_transitions(self):
+
+        psi0 = self.ELS.basis[0]
+
+        self.ELS.polarization = (1, 1, 1)
+        self.ELS.B = 30.0
+        self.ELS.sat = 10.0
+
+        detunings = np.linspace(-50.0, 50.0, num=50) + (self.ELS.s_splitting + self.ELS.p_splitting)
+
+        populations = [[] for _ in range(8)]
+
+        for detuning in detunings:
+            self.ELS.delta = detuning
+
+            result = qutip.mesolve(self.ELS.H, psi0, self.times, self.ELS.decay, self.population)
+
+            for i in range(8):
+                populations[i].append(result.expect[i][-1])
+
+        if False:
+            for i, population in enumerate(populations):
+                plt.plot(detunings, population, label="%d" % i)
+
             plt.legend()
             plt.show()
             plt.close()
