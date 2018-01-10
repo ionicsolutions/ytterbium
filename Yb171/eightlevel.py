@@ -23,16 +23,26 @@ import qutip
 
 from ..polarization import normalize
 
-# Clebsch-Gordan coefficients
+# Clebsch-Gordan coefficients (as calculated with ytterbium.clebsch_gordan)
 cg = np.zeros((8, 8))
-cg[0][5] = cg[5][0] = cg[0][7] = cg[7][0] = -1 / np.sqrt(3)
+
+# pi transitions
 cg[0][6] = cg[6][0] = 1 / np.sqrt(3)
-cg[1][4] = cg[4][1] = cg[1][5] = cg[5][1] = \
-    cg[1][6] = cg[6][1] = 1 / np.sqrt(3)
-cg[2][4] = cg[4][2] = cg[2][5] = cg[5][2] = -1 / np.sqrt(3)
+cg[1][5] = cg[5][1] = -1 / np.sqrt(3)
+cg[2][4] = cg[4][2] = 1 / np.sqrt(3)
+cg[3][7] = cg[7][3] = 1 / np.sqrt(3)
+
+# sigma+ transitions
+cg[0][7] = cg[7][0] = -1 / np.sqrt(3)
+cg[1][4] = cg[4][1] = 1 / np.sqrt(3)
+cg[1][6] = cg[6][1] = 1 / np.sqrt(3)
 cg[2][7] = cg[7][2] = 1 / np.sqrt(3)
+
+# sigma- transitions
+cg[0][5] = cg[5][0] = -1 / np.sqrt(3)
+cg[2][5] = cg[5][2] = -1 / np.sqrt(3)
 cg[3][4] = cg[4][3] = 1 / np.sqrt(3)
-cg[3][6] = cg[6][3] = cg[3][7] = cg[7][3] = -1 / np.sqrt(3)
+cg[3][6] = cg[6][3] = -1 / np.sqrt(3)
 
 # mF factors
 mF = np.zeros(8)
@@ -80,12 +90,12 @@ class EightLevelSystem:
     @property
     def H(self):
         """Full Hamiltonian of the system."""
-        laser_field = [2 * np.pi * self.delta * 10 ** 6
+        laser_field = [2 * np.pi * -self.delta * 10 ** 6
                        * self.basis[4] * self.basis[4].dag()]
-        laser_field += [2 * np.pi * (self.delta - self.p_splitting) * 10 ** 6
+        laser_field += [2 * np.pi * (-self.delta + self.p_splitting) * 10 ** 6
                         * self.basis[i] * self.basis[i].dag()
                         for i in (5, 6, 7)]
-        laser_field += [2 * np.pi * self.s_splitting * 10 ** 6
+        laser_field += [2 * np.pi * -self.s_splitting * 10 ** 6
                         * self.basis[0] * self.basis[0].dag()]
 
         magnetic_field = [2 * np.pi * mF[i] * 1.4 * 10 ** 6 * self.B
@@ -97,7 +107,7 @@ class EightLevelSystem:
         magnetic_field += [2 * np.pi * self.quadratic_shift * self.B ** 2
                            * self.basis[0] * self.basis[0].dag()]
 
-        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j] ** 2
+        off_diagonal_elements = [self.omega[i][j] / 2 * cg[i][j]
                                  * self.basis[i] * self.basis[j].dag()
                                  for i, j in itertools.product(range(8),
                                                                range(8))]
